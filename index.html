@@ -1,0 +1,128 @@
+<!doctype html> 
+<html>
+  <head>
+    <title>Node.js Demo</title>
+    <meta charset="ISO-8859-1" /> 
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" /> 
+
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <style type="text/css">
+      html,body {
+        padding: 0;
+        margin: 0;
+        width: 100%;
+        height: 100%;
+        min-height: 600px;
+        text-align: center;
+        background: -webkit-radial-gradient(center, ellipse cover, rgba(0,0,0,0) 0%,rgba(0,0,0,0.25) 100%,rgba(0,0,0,0.25) 100%);
+        background: -moz-radial-gradient(center, ellipse cover, rgba(0,0,0,0) 0%, rgba(0,0,0,0.25) 100%, rgba(0,0,0,0.25) 100%);
+        color: #292929
+      }
+
+      iframe { display: none; }
+
+      .slide {
+        display: none;
+        width: 100%;
+        height: 100%;
+      }
+
+      .slideTitle {
+        font-size: 76px;
+        font-weight: bold;
+        font-family: 'League Gothic', sans-serif;
+        line-height: 0.9em;
+        letter-spacing: -5px;
+        text-transform: uppercase;
+        text-shadow: 1px 1px 0 rgba(225, 225, 225, 1);
+      }
+
+      .slideText {
+        font-size: 26px;
+        margin-bottom: 200px;
+        border: none;
+        border-color: transparent;
+        outline: 0px none transparent;
+        resize: none;
+        background: none;
+        width: 90%;
+      }
+    </style>
+
+    <script type="text/javascript">
+        function populateComments() {
+            var slidesDiv = $("#slides");
+
+            slidesDiv.find(".slide:not(#newComment)").remove();
+            $("#newSlideTitle,#newSlideContent").val("");
+
+            $.ajax({
+                url: "/slides",
+                type: "GET",
+                cache: false,
+                success: function(data) {
+                    $.each(data, function(i, item) {
+                        var slide = $("<div class='slide' />").appendTo(slidesDiv);
+                        $("<div class='slideTitle' readonly='readonly' />").text(item.title).appendTo(slide);
+                        $("<textarea class='slideText' rows='10' readonly='readonly' />").val(item.text).appendTo(slide);
+                    });
+
+                    $(".slide").click(function () {
+                        var next = ($(this).next().length > 0) ? $(this).next() : $(".slide").first();
+                        $(this).fadeOut(function () { 
+                            next.fadeIn();
+                        });
+                    }).filter(":not(#newComment):first").fadeIn();
+
+                    if ($(".slide").length === 1) {
+                      $(".slide").show();
+                    }
+                }
+            });
+        }
+
+        $(document).ready(function() {
+            populateComments();
+            
+            $("#newSlideTitle,#newSlideContent").click(function() {
+                return false;   //prevent clicks on the input form from advancing the slide
+            });
+
+            $("#newCommentForm").submit(function() {
+                $("#slideSubmit").blur();
+                $("#slideError").empty();
+
+                $.ajax({
+                    url: "/slide",
+                    type: "POST",
+                    data: $(this).serialize(),
+                    success: populateComments,
+                    error: function(jqxhr, textStatus, errorThrown) {
+                        $("#slideError").text("Error: " + jqxhr.responseText);
+                    }
+                });
+            });
+        });
+    </script>
+  </head>
+  <body>
+      <div id="slides">
+        <div id="newComment" class="slide">New Slide Form:
+          <span id="slideError" style="color:red;"></span>
+          <form id="newCommentForm" method="" enctype="multipart/form-data" action="#" target="postFrame">
+            <label for="title">Title: </label>
+            <input type="text" name="title" id="newSlideTitle" />
+            <br/>
+
+            <label for="text">Content: </label>
+            <br/>
+            <textarea rows="5" cols="100" name="text" id="newSlideContent"></textarea>
+            <br/>
+            <input id="slideSubmit" type="submit"/>
+          </form>
+        </div>
+      </div>
+
+      <iframe name="postFrame"></iframe>
+  </body>
+</html>

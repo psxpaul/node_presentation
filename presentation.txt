@@ -1,0 +1,21 @@
+Introduction
+-Node.js is Javascript on the backend!
+-uses a dynamic language on a very fast VM (V8)
+-event driven programming model, processing things in a single process
+
+
+Why Node.js
+-Browser wars -> lots of money invested in Javascript implementations -> V8 is incredibly fast
+-everyone (hopefully) knows Javascript here
+-the Node.js community is very active
+-using the same language on the frontend and the backend has advantages (e.g. code reuse, context switching, native JSON manipulation, etc.)
+-Javascript is fun
+
+
+
+Who Uses Node.js
+-Yahoo!  (http://developer.yahoo.com/blogs/ydn/posts/2010/07/multicore_http_server_with_nodejs/)
+-Microsoft  (https://www.windowsazure.com/en-us/develop/nodejs/)
+-Walmart  (http://venturebeat.com/2012/01/24/why-walmart-is-using-node-js/)
+-Github.com  (http://gunnertech.com/2011/12/companies-using-node-js/)
+-LinkedIn  (http://venturebeat.com/2011/08/16/linkedin-node/)
