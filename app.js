@@ -9,7 +9,7 @@ var express = require("express"),
 app.configure(function () {
     app.set("port", process.env.PORT || 3000);
     app.use(express.bodyParser());
-    app.use(express["static"](__dirname));
+    app.use(express["static"](__dirname));  //THIS WILL SERVE UP ALL SOURCE CODE!!!
 });
 
 mongo.connect(dbAddress, {auto_reconnect: true}, function (error, db) {
