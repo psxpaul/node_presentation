@@ -1,7 +1,7 @@
 var express = require("express"),
     app = express(),
-    MongoDb = require("mongodb"),
-    db = new MongoDb.Db("test", new MongoDb.Server("localhost", 27017, {auto_reconnect: true}, {})),
+    //MongoDb = require("mongodb"),
+    //db = new MongoDb.Db("test", new MongoDb.Server("localhost", 27017, {auto_reconnect: true}, {})),
     findAllSlides,
     postSlide;
 
@@ -11,7 +11,7 @@ app.configure(function () {
     app.use(express["static"](__dirname));
 });
 
-db.open(function (err, db) {
+/* db.open(function (err, db) {
     db.collection("slides", function (error, collection) {
         findAllSlides = function (callback) {
             collection.find().toArray(callback);
@@ -21,7 +21,7 @@ db.open(function (err, db) {
             collection.save(newSlide, {safe: true}, callback);
         };
     });
-});
+}); */
 
 // BEGIN ROUTES
 app.get("/slides", function (req, res) {
