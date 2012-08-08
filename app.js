@@ -1,7 +1,8 @@
 var express = require("express"),
     app = express(),
-    //MongoDb = require("mongodb"),
-    //db = new MongoDb.Db("test", new MongoDb.Server("localhost", 27017, {auto_reconnect: true}, {})),
+    MongoDb = require("mongodb"),
+    db = new MongoDb.Db("test", new MongoDb.Server("localhost", 27017, {auto_reconnect: true}, {})),
+    port = process.env.PORT || 3000,
     findAllSlides,
     postSlide;
 
@@ -47,5 +48,6 @@ app.post("/slide", function (req, res, next) {
 });
 // END ROUTES
 
-app.listen(3000);
-console.log("Express server listening on port ", app.get("port"));
+app.listen(port, function () {
+    console.log("Listening on port " + port);
+});
