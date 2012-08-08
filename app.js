@@ -7,7 +7,7 @@ var express = require("express"),
     postSlide;
 
 app.configure(function () {
-    app.set("port", process.env.PORT || 3000);
+    app.set("port", port);
     app.use(express.bodyParser());
     app.use(express["static"](__dirname));  //THIS WILL SERVE UP ALL SOURCE CODE!!!
 });
