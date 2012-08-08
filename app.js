@@ -12,7 +12,7 @@ app.configure(function () {
     app.use(express["static"](__dirname));
 });
 
-/* db.open(function (err, db) {
+db.open(function (err, db) {
     db.collection("slides", function (error, collection) {
         findAllSlides = function (callback) {
             collection.find().toArray(callback);
@@ -22,7 +22,7 @@ app.configure(function () {
             collection.save(newSlide, {safe: true}, callback);
         };
     });
-}); */
+});
 
 // BEGIN ROUTES
 app.get("/slides", function (req, res) {
