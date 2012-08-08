@@ -1,7 +1,7 @@
 var express = require("express"),
     app = express(),
-    MongoDb = require("mongodb"),
-    db = new MongoDb.Db("test", new MongoDb.Server("localhost", 27017, {auto_reconnect: true}, {})),
+    mongo = require("mongodb"),
+    dbAddress = process.env.MONGOLAB_URI || "mongo://localhost:27017/test",
     port = process.env.PORT || 3000,
     findAllSlides,
     postSlide;
@@ -12,7 +12,13 @@ app.configure(function () {
     app.use(express["static"](__dirname));
 });
 
-db.open(function (err, db) {
+mongo.connect(dbAddress, {auto_reconnect: true}, function (error, db) {
+    console.log("connected to mongodb: " + db);
+
+    db.addListener("error", function (error) {
+        console.log("Error connecting to mongodb");
+    });
+
     db.collection("slides", function (error, collection) {
         findAllSlides = function (callback) {
             collection.find().toArray(callback);
